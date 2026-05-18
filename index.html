@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meta-Hati | High-End Web & System Solutions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: '#00d2ff',
+            darkbg: '#02040a',
+            metaCyan: '#00f2fe',
+            metaBlue: '#4facfe',
+          },
+          fontFamily: {
+            jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            neon: '0 0 40px rgba(0, 210, 255, 0.45)',
+            logoGlow: '0 0 30px rgba(0, 242, 254, 0.6)',
+            cardGlow: '0 0 35px rgba(0, 242, 254, 0.15)',
+            subtleGlow: '0 0 25px rgba(0, 210, 255, 0.1)',
+          },
+        },
+      },
+    };
+  </script>
+  
+  <style>
+    /* Kesan Grid & Noise Premium seperti dalam mockup gambar */
+    .premium-bg {
+      background-color: #02040a;
+      background-image: 
+        linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+      background-size: 40px 40px, 40px 40px, auto;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(40px, -60px) scale(1.2); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-orb {
+      animation: floatOrb 12s infinite ease-in-out;
+    }
+    .animate-orb-delayed {
+      animation: floatOrb 16s infinite ease-in-out 2s;
+    }
+  </style>
+</head>
+
+<body class="text-gray-200 font-jakarta overflow-x-hidden relative premium-bg">
+
+  <canvas id="interactiveCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+
+  <div class="absolute top-[20%] left-[10%] w-[450px] h-[450px] bg-metaCyan/10 rounded-full blur-[130px] pointer-events-none z-0 animate-orb"></div>
+  <div class="absolute top-[50%] right-[50%] w-[500px] h-[500px] bg-metaBlue/10 rounded-full blur-[150px] pointer-events-none z-0 animate-orb-delayed"></div>
+  <div class="absolute top-[75%] right-[10%] w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none z-0 animate-orb"></div>
+
+  <nav class="fixed top-0 left-0 w-full z-50 bg-darkbg/70 backdrop-blur-xl border-b border-white/5 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:border-metaCyan/50 transition-all duration-300 shadow-logoGlow">
+          <svg class="w-6 h-6 text-metaCyan group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21S3 14 3 8.5A4.5 4.5 0 0 1 7.5 4c1.74 0 3.41.81 4.5 2.09C13.09 4.81 14.76 4 16.5 4A4.5 4.5 0 0 1 21 8.5c0 5.5-9 12-9 12z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.5 10c1 0 2.5 2 4.5 2s3.5-2 4.5-2" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M7.5 12c1 0 2.5-2 4.5-2s3.5 2 4.5 2" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="7.5" y1="10" x2="16.5" y2="12" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00f2fe"/>
+                <stop offset="1" stop-color="#4facfe"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-black text-base tracking-wider text-white leading-none">META-<span class="bg-gradient-to-r from-metaCyan to-metaBlue bg-clip-text text-transparent">HATI</span></span>
+          <span class="text-[9px] text-metaCyan font-bold tracking-widest uppercase mt-0.5">Systems Lab</span>
+        </div>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+        <a href="#servis" data-i18n="nav_services" class="hover:text-metaCyan transition-colors">Servis</a>
+        <a href="#teknologi" data-i18n="nav_tech" class="hover:text-metaCyan transition-colors">Teknologi</a>
+        <a href="#proses" data-i18n="nav_process" class="hover:text-metaCyan transition-colors">Sistem Kerja</a>
+        <a href="#kelebihan" data-i18n="nav_why" class="hover:text-metaCyan transition-colors">Kelebihan</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="relative inline-flex items-center p-0.5 bg-white/5 border border-white/10 rounded-xl">
+          <button onclick="switchLanguage('ms')" id="lang-ms" class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-gradient-to-r from-metaCyan to-metaBlue text-black shadow-md">
+            🇲🇾 <span class="hidden sm:inline">MY</span>
+          </button>
+          <button onclick="switchLanguage('en')" id="lang-en" class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-gray-400 hover:text-white">
+            🇬🇧 <span class="hidden sm:inline">EN</span>
+          </button>
+        </div>
+
+        <a href="#hubungi" data-i18n="nav_cta" class="bg-white/5 border border-white/10 text-white text-xs font-semibold tracking-wider uppercase px-5 py-2.5 rounded-xl hover:bg-gradient-to-r hover:from-metaCyan hover:to-metaBlue hover:text-black hover:border-transparent transition-all duration-300 shadow-logoGlow">
+          Konsultasi
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="relative pt-52 pb-36 text-center overflow-hidden z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,242,254,0.15),transparent_50%)]"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-metaCyan/20 bg-metaCyan/5 backdrop-blur-md text-xs font-semibold tracking-widest text-metaCyan uppercase mb-8 shadow-logoGlow">
+        <span class="w-1.5 h-1.5 rounded-full bg-metaCyan animate-pulse"></span> <span data-i18n="hero_tag">Merevolusikan Seni Bina Digital</span>
+      </div>
+
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.15] mb-8 tracking-tight text-white" id="hero-title">
+        Merevolusikan Perniagaan Anda <br>Melalui Automasi
+        <span class="bg-gradient-to-r from-metaCyan via-metaBlue to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,242,254,0.3)]" data-i18n="hero_highlight">
+          Sistem Custom
+        </span>
+      </h1>
+
+      <p class="text-base md:text-xl text-gray-400 max-w-3xl mx-auto mb-14 leading-relaxed" data-i18n="hero_desc">
+        Gandingan Rekaan Futuristik & Logik Maksimum. Kami mentransformasikan proses manual yang rencam kepada ekosistem perisian pintar yang utuh, selamat, dan berskala global.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#hubungi" data-i18n="hero_btn_main" class="w-full sm:w-auto inline-block bg-gradient-to-r from-metaCyan to-metaBlue text-black font-extrabold text-sm uppercase tracking-wider px-10 py-4 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-neon hover:scale-105">
+          Mula Projek Sekarang
+        </a>
+        <a href="#servis" data-i18n="hero_btn_sec" class="w-full sm:w-auto inline-block bg-white/5 border border-white/10 text-white font-bold text-sm tracking-wider px-10 py-4 rounded-xl transition-all duration-300 hover:bg-white/10">
+          Lihat Kepakaran
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="servis" class="py-28 px-6 relative z-10 scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20">
+        <h2 class="text-xs font-bold tracking-widest text-metaCyan uppercase mb-3" data-i18n="services_tag">Core Capabilities</h2>
+        <p class="text-3xl md:text-5xl font-extrabold text-white tracking-tight" data-i18n="services_title">Solusi Digital Berprestasi Tinggi</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="group bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-xl border border-white/10 rounded-3xl p-10 transition-all duration-500 hover:border-metaCyan/40 hover:shadow-cardGlow">
+          <h3 class="text-2xl font-extrabold text-white group-hover:text-metaCyan transition-colors duration-300 mb-4" data-i18n="srv_1_title">Enterprise System</h3>
+          <p class="text-gray-400 leading-relaxed text-sm md:text-base" data-i18n="srv_1_desc">Pembangunan sistem pengurusan korporat (ERP, E-Procurement, Core Records) yang kompleks. Fokus utama kepada integriti data berskala besar dan sekuriti bertaraf industri.</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">MySQL Optimization</span>
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">PHP/Laravel Architecture</span>
+          </div>
+        </div>
+
+        <div class="group bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-xl border border-white/10 rounded-3xl p-10 transition-all duration-500 hover:border-metaCyan/40 hover:shadow-cardGlow">
+          <h3 class="text-2xl font-extrabold text-white group-hover:text-metaCyan transition-colors duration-300 mb-4" data-i18n="srv_2_title">Modern Web App</h3>
+          <p class="text-gray-400 leading-relaxed text-sm md:text-base" data-i18n="srv_2_desc">Aplikasi web responsif berkelajuan tinggi dengan rekaan UI/UX kontemporari. Sesuai untuk portal rasmi jabatan, dashboard analitik interaktif, atau sistem tempahan berpusat.</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">Tailwind CSS</span>
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">JavaScript ES6</span>
+          </div>
+        </div>
+
+        <div class="group bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-xl border border-white/10 rounded-3xl p-10 transition-all duration-500 hover:border-metaCyan/40 hover:shadow-cardGlow">
+          <h3 class="text-2xl font-extrabold text-white group-hover:text-metaCyan transition-colors duration-300 mb-4" data-i18n="srv_3_title">AI & Computer Vision</h3>
+          <p class="text-gray-400 leading-relaxed text-sm md:text-base" data-i18n="srv_3_desc">Implementasi teknologi pintar seperti sistem pengesanan wajah (OpenCV) untuk log kehadiran automatik, sekuriti biometrik, mahupun sistem pengecam pintar objek.</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">OpenCV / Python</span>
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">Image Datasets Training</span>
+          </div>
+        </div>
+
+        <div class="group bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-xl border border-white/10 rounded-3xl p-10 transition-all duration-500 hover:border-metaCyan/40 hover:shadow-cardGlow">
+          <h3 class="text-2xl font-extrabold text-white group-hover:text-metaCyan transition-colors duration-300 mb-4" data-i18n="srv_4_title">Consultancy & Audit</h3>
+          <p class="text-gray-400 leading-relaxed text-sm md:text-base" data-i18n="srv_4_desc">Analisis mendalam seni bina kod perisian sedia ada, penstrukturan semula database SQL yang lembap, serta penyediaan sokongan teknikal kritikal (Application Support).</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">App Analyst & Support</span>
+            <span class="px-4 py-1.5 rounded-xl border border-white/5 bg-white/5 text-xs text-gray-300 font-medium">Query Tuning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="teknologi" class="py-24 bg-black/40 backdrop-blur-md relative z-10 border-y border-white/5 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-xs font-bold tracking-widest text-metaCyan uppercase mb-3" data-i18n="tech_tag">Ecosystem & Stack</h2>
+      <p class="text-2xl md:text-4xl font-extrabold text-white mb-16 tracking-tight" data-i18n="tech_title">Infrastruktur Gred Industri Global</p>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div class="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center hover:border-metaCyan/30 hover:bg-white/[0.04] transition-all duration-300">
+          <div class="font-bold text-xl text-white mb-1">Laravel</div>
+          <span class="text-xs text-metaCyan font-medium" data-i18n="stack_1">Robust Backend</span>
+        </div>
+        <div class="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center hover:border-metaCyan/30 hover:bg-white/[0.04] transition-all duration-300">
+          <div class="font-bold text-xl text-white mb-1">MySQL</div>
+          <span class="text-xs text-metaCyan font-medium" data-i18n="stack_2">Data Integrity</span>
+        </div>
+        <div class="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center hover:border-metaCyan/30 hover:bg-white/[0.04] transition-all duration-300">
+          <div class="font-bold text-xl text-white mb-1">Tailwind CSS</div>
+          <span class="text-xs text-metaCyan font-medium" data-i18n="stack_3">Next-Gen UI</span>
+        </div>
+        <div class="p-8 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center hover:border-metaCyan/30 hover:bg-white/[0.04] transition-all duration-300">
+          <div class="font-bold text-xl text-white mb-1">Python / CV</div>
+          <span class="text-xs text-metaCyan font-medium" data-i18n="stack_4">AI Automation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proses" class="py-28 px-6 relative z-10 scroll-mt-20">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-20">
+        <h2 class="text-xs font-bold tracking-widest text-metaCyan uppercase mb-3" data-i18n="proc_tag">Our Methodology</h2>
+        <p class="text-3xl md:text-5xl font-extrabold text-white tracking-tight" data-i18n="proc_title">Proses Kejuruteraan Sistem</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 relative">
+        <div class="relative p-8 rounded-2xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5">
+          <div class="absolute -top-5 left-6 bg-gradient-to-r from-metaCyan to-metaBlue text-black font-extrabold w-10 h-10 rounded-xl flex items-center justify-center shadow-logoGlow text-sm">01</div>
+          <h4 class="text-xl font-bold text-white mt-5 mb-3" data-i18n="step_1_title">Skop & Konsultasi</h4>
+          <p class="text-gray-400 text-sm leading-relaxed" data-i18n="step_1_desc">Kami menganalisis keperluan perniagaan anda, menetapkan skop modul, mendraf pelan pangkalan data, dan merangka logik sistem sebelum kod pertama ditulis.</p>
+        </div>
+        <div class="relative p-8 rounded-2xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5">
+          <div class="absolute -top-5 left-6 bg-gradient-to-r from-metaCyan to-metaBlue text-black font-extrabold w-10 h-10 rounded-xl flex items-center justify-center shadow-logoGlow text-sm">02</div>
+          <h4 class="text-xl font-bold text-white mt-5 mb-3" data-i18n="step_2_title">Pembangunan Berskala</h4>
+          <p class="text-gray-400 text-sm leading-relaxed" data-i18n="step_2_desc">Pembangunan menggunakan kaedah agile berfasa. Antara muka (UI) digubah berpandukan standard moden manakala fungsi logik backend dioptimumkan sepenuhnya.</p>
+        </div>
+        <div class="relative p-8 rounded-2xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5">
+          <div class="absolute -top-5 left-6 bg-gradient-to-r from-metaCyan to-metaBlue text-black font-extrabold w-10 h-10 rounded-xl flex items-center justify-center shadow-logoGlow text-sm">03</div>
+          <h4 class="text-xl font-bold text-white mt-5 mb-3" data-i18n="step_3_title">Ujian & Penyerahan</h4>
+          <p class="text-gray-400 text-sm leading-relaxed" data-i18n="step_3_desc">Sistem melalui fasa ujian intensif (stress-test) dan audit sekuriti data yang ketat sebelum dilancarkan sepenuhnya ke live server awan (cloud) pilihan anda.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kelebihan" class="py-28 bg-gradient-to-b from-transparent to-white/[0.01] px-6 relative z-10 border-t border-white/5 scroll-mt-20">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-xs font-bold tracking-widest text-metaCyan uppercase mb-3" data-i18n="val_tag">Why Partner With Us</h2>
+        <p class="text-3xl md:text-4xl font-extrabold text-white mb-6 tracking-tight" data-i18n="val_title">Kualiti Perisian Tanpa Kompromi.</p>
+        <p class="text-gray-400 leading-relaxed mb-6 text-sm md:text-base" data-i18n="val_desc">
+          Sistem yang tidak stabil boleh melumpuhkan operasi perniagaan dalam sekelip mata. Meta-Hati fokus membina teras sistem perisian yang tangkas, lestari, dan kalis masa hadapan.
+        </p>
+        <ul class="space-y-4 text-sm text-gray-300">
+          <li class="flex items-center gap-3"><span class="text-metaCyan font-bold">✓</span> <span data-i18n="val_li_1">Seni bina kod bersih (Clean Code) berasaskan standard antarabangsa.</span></li>
+          <li class="flex items-center gap-3"><span class="text-metaCyan font-bold">✓</span> <span data-i18n="val_li_2">Struktur pangkalan data relasi yang pantas & berintegriti tinggi.</span></li>
+          <li class="flex items-center gap-3"><span class="text-metaCyan font-bold">✓</span> <span data-i18n="val_li_3">Sokongan teknikal pasca-pelancaran yang berdedikasi dan responsif.</span></li>
+        </ul>
+      </div>
+      <div class="p-8 rounded-3xl bg-white/[0.02] border border-white/10 shadow-subtleGlow relative">
+        <div class="space-y-4">
+          <div class="p-5 rounded-xl bg-white/5 border border-white/5 flex justify-between items-center">
+            <span class="text-sm font-semibold text-gray-300" data-i18n="metric_1">Uptime Perisian Target</span>
+            <span class="text-metaCyan font-bold text-sm drop-shadow-[0_0_10px_rgba(0,242,254,0.5)]">99.9%</span>
+          </div>
+          <div class="p-5 rounded-xl bg-white/5 border border-white/5 flex justify-between items-center">
+            <span class="text-sm font-semibold text-gray-300" data-i18n="metric_2">Seni Bina Sekuriti</span>
+            <span class="text-emerald-400 font-bold text-sm" data-i18n="metric_2_val">Gred Enterprise</span>
+          </div>
+          <div class="p-5 rounded-xl bg-white/5 border border-white/5 flex justify-between items-center">
+            <span class="text-sm font-semibold text-gray-300" data-i18n="metric_3">Integrasi Data</span>
+            <span class="text-cyan-400 font-bold text-sm" data-i18n="metric_3_val">Masa Nyata (Real-time)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hubungi" class="py-28 px-6 relative z-10 scroll-mt-20">
+    <div class="max-w-3xl mx-auto bg-gradient-to-b from-white/[0.05] to-transparent p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,242,254,0.08),transparent_50%)] rounded-3xl pointer-events-none"></div>
+      
+      <div class="text-center mb-12 relative z-10">
+        <h2 class="text-xs font-bold tracking-widest text-metaCyan uppercase mb-2" data-i18n="form_tag">Project Brief</h2>
+        <h3 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight" data-i18n="form_title">Mari Bincang Projek Anda</h3>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="form_desc">Nyatakan idea atau masalah teknikal anda, kami sedia membantu.</p>
+      </div>
+
+      <form action="#" method="POST" class="space-y-6 relative z-10">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" data-i18n="lbl_name">Nama Penuh</label>
+            <input type="text" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-metaCyan transition-colors text-sm" id="input_name" placeholder="Contoh: Luqman Hakim" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" data-i18n="lbl_email">Emel Rasmi / Organisasi</label>
+            <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-metaCyan transition-colors text-sm" placeholder="nama@syarikat.com" required>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" data-i18n="lbl_project">Jenis Projek / Keperluan Solusi</label>
+          <select class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-metaCyan transition-colors text-sm" id="select_project" required>
+            </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" data-i18n="lbl_desc">Deskripsi Ringkas Perisian / Masalah Teknikal</label>
+          <textarea rows="4" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-metaCyan transition-colors text-sm" id="textarea_desc" required></textarea>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-metaCyan to-metaBlue text-black font-extrabold text-sm uppercase tracking-wider py-4 rounded-xl shadow-neon hover:scale-[1.01] transition-all" data-i18n="form_submit">
+          Hantar Request Konsultasi
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="border-t border-white/5 py-14 text-center px-6 relative z-10 bg-darkbg/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="font-extrabold text-lg text-white tracking-wider">
+        META-<span class="text-metaCyan">HATI</span>
+      </div>
+      <p class="text-gray-500 text-sm">
+        &copy; 2026 Meta-Hati Systems Lab. <span data-i18n="footer_rights">Hak Cipta Terpelihara.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      ms: {
+        nav_services: "Servis",
+        nav_tech: "Teknologi",
+        nav_process: "Sistem Kerja",
+        nav_why: "Kelebihan",
+        nav_cta: "Konsultasi",
+        hero_tag: "Merevolusikan Seni Bina Digital",
+        hero_desc: "Gandingan Rekaan Futuristik & Logik Maksimum. Kami mentransformasikan proses manual yang rencam kepada ekosistem perisian pintar yang utuh, selamat, dan berskala global.",
+        hero_btn_main: "Mula Projek Sekarang",
+        hero_btn_sec: "Lihat Kepakaran",
+        services_tag: "Core Capabilities",
+        services_title: "Solusi Digital Berprestasi Tinggi",
+        srv_1_title: "Enterprise System",
+        srv_1_desc: "Pembangunan sistem pengurusan korporat (ERP, E-Procurement, Core Records) yang kompleks. Fokus utama kepada integriti data berskala besar dan sekuriti bertaraf industri.",
+        srv_2_title: "Modern Web App",
+        srv_2_desc: "Aplikasi web responsif berkelajuan tinggi dengan rekaan UI/UX kontemporari. Sesuai untuk portal rasmi jabatan, dashboard analitik interaktif, atau sistem tempahan berpusat.",
+        srv_3_title: "AI & Computer Vision",
+        srv_3_desc: "Implementasi teknologi pintar seperti sistem pengesanan wajah (OpenCV) untuk log kehadiran automatik, sekuriti biometrik, mahupun sistem pengecam pintar objek.",
+        srv_4_title: "Consultancy & Audit",
+        srv_4_desc: "Analisis mendalam seni bina kod perisian sedia ada, penstrukturan semula database SQL yang lembap, serta penyediaan sokongan teknikal kritikal (Application Support).",
+        tech_tag: "Ecosystem & Stack",
+        tech_title: "Infrastruktur Gred Industri Global",
+        stack_1: "Robust Backend",
+        stack_2: "Data Integrity",
+        stack_3: "Next-Gen UI",
+        stack_4: "AI Automation",
+        proc_tag: "Our Methodology",
+        proc_title: "Proses Kejuruteraan Sistem",
+        step_1_title: "Skop & Konsultasi",
+        step_1_desc: "Kami menganalisis keperluan perniagaan anda, menetapkan skop modul, mendraf pelan pangkalan data, dan merangka logik sistem sebelum kod pertama ditulis.",
+        step_2_title: "Pembangunan Berskala",
+        step_2_desc: "Pembangunan menggunakan kaedah agile berfasa. Antara muka (UI) digubah berpandukan standard moden manakala fungsi logik backend dioptimumkan sepenuhnya.",
+        step_3_title: "Ujian & Penyerahan",
+        step_3_desc: "Sistem melalui fasa ujian intensif (stress-test) dan audit sekuriti data yang ketat sebelum dilancarkan sepenuhnya ke live server awan (cloud) pilihan anda.",
+        val_tag: "Why Partner With Us",
+        val_title: "Kualiti Perisian Tanpa Kompromi.",
+        val_desc: "Sistem yang tidak stabil boleh melumpuhkan operasi perniagaan dalam sekelip mata. Meta-Hati fokus membina teras sistem perisian yang tangkas, lestari, dan kalis masa hadapan.",
+        val_li_1: "Seni bina kod bersih (Clean Code) berasaskan standard antarabangsa.",
+        val_li_2: "Struktur pangkalan data relasi yang pantas & berintegriti tinggi.",
+        val_li_3: "Sokongan teknikal pasca-pelancaran yang berdedikasi dan responsif.",
+        metric_1: "Uptime Perisian Target",
+        metric_2: "Seni Bina Sekuriti",
+        metric_2_val: "Gred Enterprise",
+        metric_3: "Integrasi Data",
+        metric_3_val: "Masa Nyata (Real-time)",
+        form_tag: "Project Brief",
+        form_title: "Mari Bincang Projek Anda",
+        form_desc: "Nyatakan idea atau masalah teknikal anda, kami sedia membantu.",
+        lbl_name: "Nama Penuh",
+        lbl_email: "Emel Rasmi / Organisasi",
+        lbl_project: "Jenis Projek / Keperluan Solusi",
+        lbl_desc: "Deskripsi Ringkas Perisian / Masalah Teknikal",
+        form_submit: "Hantar Request Konsultasi",
+        footer_rights: "Hak Cipta Terpelihara.",
+        placeholder_name: "Contoh: Luqman Hakim",
+        placeholder_desc: "Nyatakan serba sedikit mengenai aliran kerja manual, struktur pangkalan data yang bermasalah, mahupun skop modul yang ingin anda bangunkan...",
+        opt_default: "Pilih Klasifikasi Projek",
+        opt_1: "Sistem Rekod Khusus / Pengurusan Fail & Prosedur Court",
+        opt_2: "Automasi Kehadiran Pintar & Pengecaman Wajah (OpenCV)",
+        opt_3: "Sistem Custom Enterprise (ERP / E-Procurement / Kewangan)",
+        opt_4: "Analisis & Optimasi Prestasi Database SQL (Query Tuning)",
+        opt_5: "Aplikasi Web Korporat & Papan Pemuka (Dashboard Analytics)",
+        opt_6: "Integrasi Perisian Pihak Ketiga & Pembangunan API"
+      },
+      en: {
+        nav_services: "Services",
+        nav_tech: "Technology",
+        nav_process: "Workflow",
+        nav_why: "Advantages",
+        nav_cta: "Consultation",
+        hero_tag: "Revolutionizing Digital Architecture",
+        hero_desc: "Fusing Futuristic Design & Maximum Logic. We transform complex manual workflows into robust, highly secure, and globally scalable intelligent software ecosystems.",
+        hero_btn_main: "Start Project Now",
+        hero_btn_sec: "Our Capabilities",
+        services_tag: "Core Capabilities",
+        services_title: "High-Performance Digital Solutions",
+        srv_1_title: "Enterprise System",
+        srv_1_desc: "Development of complex corporate management systems (ERP, E-Procurement, Core Records). Focused heavily on large-scale data integrity and industry-grade security.",
+        srv_2_title: "Modern Web App",
+        srv_2_desc: "High-speed responsive web applications with contemporary UI/UX design. Perfect for official agency portals, interactive analytical dashboards, or centralized booking engines.",
+        srv_3_title: "AI & Computer Vision",
+        srv_3_desc: "Implementation of smart technologies such as facial recognition systems (OpenCV) for automated attendance logs, biometric security, or intelligent object detection.",
+        srv_4_title: "Consultancy & Audit",
+        srv_4_desc: "Deep analysis of existing software architectures, restructuring slow SQL databases, and providing critical operational technical assistance (Application Support).",
+        tech_tag: "Ecosystem & Stack",
+        tech_title: "Global Industry-Grade Infrastructure",
+        stack_1: "Robust Backend",
+        stack_2: "Data Integrity",
+        stack_3: "Next-Gen UI",
+        stack_4: "AI Automation",
+        proc_tag: "Our Methodology",
+        proc_title: "Systems Engineering Process",
+        step_1_title: "Scope & Consultation",
+        step_1_desc: "We analyze your business operations, define strict module requirements, draft database schema relations, and map core system logic before any code is written.",
+        step_2_title: "Scalable Development",
+        step_2_desc: "Phased agile development via sprint deliveries. User interfaces are sculpted to modern standards while the backend functions are fully multi-thread optimized.",
+        step_3_title: "Testing & Deployment",
+        step_3_desc: "Systems go through intensive performance stress-tests and stringent data security audits before being completely deployed to your live cloud production servers.",
+        val_tag: "Why Partner With Us",
+        val_title: "Uncompromising Software Quality.",
+        val_desc: "Unstable systems can cripple business operations in an instant. Meta-Hati focuses on building agile, sustainable, and future-proof software cores.",
+        val_li_1: "Clean code architecture matching rigorous international programming standards.",
+        val_li_2: "Relational database optimization offering hyper-fast query execution and data safety.",
+        val_li_3: "Dedicated, responsive, and ongoing post-launch tier-3 application support.",
+        metric_1: "Target Software Uptime",
+        metric_2: "Security Architecture",
+        metric_2_val: "Enterprise Grade",
+        metric_3: "Data Integration",
+        metric_3_val: "Real-time Sync",
+        form_tag: "Project Brief",
+        form_title: "Let's Discuss Your Project",
+        form_desc: "State your system concept or technical bottlenecks, we are ready to assist.",
+        lbl_name: "Full Name",
+        lbl_email: "Official Email / Organization",
+        lbl_project: "Project Classification / Needed Solution",
+        lbl_desc: "Brief Description of Software / Technical Issue",
+        form_submit: "Submit Consultation Request",
+        footer_rights: "All Rights Reserved.",
+        placeholder_name: "E.g., Luqman Hakim",
+        placeholder_desc: "Tell us a bit about your manual workflows, slow database queries, or the specific software modules you wish to architect...",
+        opt_default: "Select Project Classification",
+        opt_1: "Custom Core Record System / Case & File Management",
+        opt_2: "Smart Attendance Automation & Face Recognition (OpenCV)",
+        opt_3: "Enterprise Custom Software (ERP / E-Procurement / Finance)",
+        opt_4: "SQL Database Diagnostics & Optimization (Query Tuning)",
+        opt_5: "Corporate Web Applications & Interactive Dashboards",
+        opt_6: "Third-party Integration & Enterprise API Development"
+      }
+    };
+
+    let currentLang = 'ms';
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      
+      // Update toggle UI
+      const btnMs = document.getElementById('lang-ms');
+      const btnEn = document.getElementById('lang-en');
+      
+      if (lang === 'ms') {
+        btnMs.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-gradient-to-r from-metaCyan to-metaBlue text-black shadow-md";
+        btnEn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-gray-400 hover:text-white";
+      } else {
+        btnEn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-gradient-to-r from-metaCyan to-metaBlue text-black shadow-md";
+        btnMs.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-gray-400 hover:text-white";
+      }
+
+      // Translate static text elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      // Special handling for main heading gradient flow retention
+      if (lang === 'ms') {
+        document.getElementById('hero-title').innerHTML = `Merevolusikan Perniagaan Anda <br>Melalui Automasi <span class="bg-gradient-to-r from-metaCyan via-metaBlue to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,242,254,0.3)]">Sistem Custom</span>`;
+      } else {
+        document.getElementById('hero-title').innerHTML = `Revolutionizing Your Business <br>Through Intelligent <span class="bg-gradient-to-r from-metaCyan via-metaBlue to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,242,254,0.3)]">Custom Systems</span>`;
+      }
+
+      // Translate Form Placeholders & Dropdown Options
+      document.getElementById('input_name').placeholder = translations[lang]['placeholder_name'];
+      document.getElementById('textarea_desc').placeholder = translations[lang]['placeholder_desc'];
+      
+      renderDropdownOptions(lang);
+    }
+
+    function renderDropdownOptions(lang) {
+      const select = document.getElementById('select_project');
+      const data = translations[lang];
+      
+      select.innerHTML = `
+        <option value="" disabled selected class="bg-darkbg text-gray-400">${data.opt_default}</option>
+        <option value="court_system" class="bg-darkbg">${data.opt_1}</option>
+        <option value="biometric_attendance" class="bg-darkbg">${data.opt_2}</option>
+        <option value="enterprise_erp" class="bg-darkbg">${data.opt_3}</option>
+        <option value="database_tuning" class="bg-darkbg">${data.opt_4}</option>
+        <option value="web_app_dashboard" class="bg-darkbg">${data.opt_5}</option>
+        <option value="api_integration" class="bg-darkbg">${data.opt_6}</option>
+      `;
+    }
+
+    // Run on initial load
+    document.addEventListener("DOMContentLoaded", () => {
+      switchLanguage('ms');
+    });
+  </script>
+
+  <script>
+    const canvas = document.getElementById('interactiveCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const particles = [];
+    const particleCount = Math.min(Math.floor((width * height) / 9000), 120); 
+    const mouse = { x: null, y: null, radius: 180 };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4; 
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 1.5 + 1;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x -= dx * force * 0.02;
+            this.y -= dy * force * 0.02;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 242, 254, 0.25)';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < 110) {
+            const alpha = (110 - dist) / 110 * 0.12; 
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+</body>
+</html>
